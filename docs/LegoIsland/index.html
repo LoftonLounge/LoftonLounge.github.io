@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>LEGO® Island</title>
+
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="app.js" as="script">
+    <link rel="preload" href="isle.js" as="script">
+    <link rel="preload" href="isle.wasm" as="fetch" crossorigin>
+    <link rel="preload" href="install.webp" as="image">
+    <link rel="preload" href="island.webp" as="image">
+
+    <meta name="description"
+        content="Play the classic 1997 PC game LEGO® Island directly in your web browser! This fan-made web port, built with Emscripten from the isledecomp project, brings the beloved adventure back to life.">
+    <meta name="keywords"
+        content="LEGO Island, LEGO, classic game, 1997, web port, browser game, Emscripten, isledecomp, retro gaming, play online, Infomaniac, Brickster, Pepper Roni">
+    <meta name="author" content="isledecomp/isle.pizza">
+    <meta name="robots" content="index, follow">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://isle.pizza/">
+    <meta name="twitter:title" content="LEGO® Island - Online Web Port">
+    <meta name="twitter:description" content="Play the classic 1997 PC game LEGO® Island directly in your web browser!">
+    <meta name="twitter:image" content="https://isle.pizza/island.webp">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://isle.pizza/">
+    <meta property="og:title" content="LEGO® Island - Online Web Port">
+    <meta property="og:description" content="Play the classic 1997 PC game LEGO® Island directly in your web browser!">
+    <meta property="og:image" content="https://isle.pizza/island.webp">
+    <meta property="og:site_name" content="LEGO Island Web Port">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="canonical" href="https://isle.pizza">
+</head>
+
+<body>
+    <div id="main-container">
+        <div id="top-content">
+            <div class="video-container">
+                <img id="install-video" width="260" height="260" src="install.webp" alt="Install Game">
+                <audio id="install-audio" loop preload="none">
+                    <source src="install.mp3" type="audio/mpeg">
+                    Your browser does not support the audio tag.
+                </audio>
+                <span id="sound-toggle-emoji" title="Unmute Audio">🔇</span>
+            </div>
+            <img id="island-logo-img" width="567" height="198" src="island.webp" alt="Lego Island Logo">
+        </div>
+
+        <div id="controls-wrapper">
+            <img class="control-img" width="135" height="164" id="run-game-btn" src="run_game_off.webp" alt="Run Game"
+                data-off="run_game_off.webp" data-on="run_game_on.webp">
+            <img class="control-img" width="130" height="147" id="configure-btn" src="configure_off.webp"
+                alt="Configure" data-off="configure_off.webp" data-on="configure_on.webp" data-target="#configure-page">
+            <img class="control-img" width="134" height="149" id="free-stuff-btn" src="free_stuff_off.webp"
+                alt="Free Stuff" data-off="free_stuff_off.webp" data-on="free_stuff_on.webp"
+                data-target="#free-stuff-page">
+            <img class="control-img" width="134" height="149" id="read-me-btn" src="read_me_off.webp" alt="Read Me"
+                data-off="read_me_off.webp" data-on="read_me_on.webp" data-target="#read-me-page">
+            <img class="control-img" width="93" height="145" id="cancel-btn" src="cancel_off.webp" alt="Cancel"
+                data-off="cancel_off.webp" data-on="cancel_on.webp" onclick="location.href = 'https://legoisland.org';">
+        </div>
+
+        <div id="read-me-page" class="page-content">
+            <span class="page-back-button" role="button" aria-label="Go back to main menu">← Back</span>
+            <div class="page-inner-content">
+                <h1>Read Me</h1>
+                <p>Welcome to the LEGO Island web port project! This is a recreation of the classic 1997 PC game,
+                    rebuilt to run in modern web browsers using Emscripten.</p>
+                <p>This incredible project stands on the shoulders of giants. It was made possible by the original <a
+                        href="https://github.com/isledecomp/isle" target="_blank"
+                        rel="noopener noreferrer">decompilation project</a>, which was then adapted into a <a
+                        href="https://github.com/isledecomp/isle-portable" target="_blank"
+                        rel="noopener noreferrer">portable version</a>. This represents a year-long effort, involving
+                    thousands of hours of work from many awesome contributors dedicated to preserving this piece of
+                    gaming history.</p>
+                <p>Our goal is to make this classic accessible to everyone. The project is still in development, so you
+                    may encounter bugs. Your patience and feedback are greatly appreciated!</p>
+
+                <div class="faq-section">
+                    <h2>Frequently Asked Questions</h2>
+                    <details>
+                        <summary>Is this the full, original game?</summary>
+                        <p>This is a complete port of the original 1997 PC game. You can select from multiple languages,
+                            including both the 1.0 and 1.1 versions of English, from the "Configure" menu before
+                            starting.</p>
+                    </details>
+                    <details>
+                        <summary>How does this differ from the original 1997 CD-ROM game?</summary>
+                        <p>The core gameplay is identical, but this version has some great advantages! It runs in your
+                            browser with no installation needed and works on modern devices. It also includes
+                            enhancements like widescreen support, improved controls, many bug fixes from the
+                            decompilation project, and the ability to run at your display's maximum resolution (even
+                            4K!).</p>
+                        <p>Check out the "Configure" page to see what's possible.</p>
+                    </details>
+                    <details>
+                        <summary>Can I save my progress?</summary>
+                        <p>Yes! The game automatically saves your progress. To ensure your game is saved, return to the
+                            Infocenter and use the exit door. This will bring you back to the main menu and lock in your
+                            save state. A "best effort" save is also attempted if you close the tab directly, but this
+                            method isn't always guaranteed.</p>
+                    </details>
+                    <details>
+                        <summary>Does this run on mobile?</summary>
+                        <p>Yes! The game is designed to work on a wide range of devices, including desktops, laptops,
+                            tablets, and phones. It has even been seen running on <a
+                                href="https://github.com/isledecomp/isle-portable/issues/418#issuecomment-3003572219"
+                                target="_blank" rel="noopener noreferrer">Tesla in-car browsers</a>! 🚗</p>
+                    </details>
+                    <details>
+                        <summary>Which browsers are supported?</summary>
+                        <p>This port runs best on recent versions of modern browsers, including Chrome, Firefox, and
+                            Safari. For an optimal experience on iOS devices, please ensure you are running iOS 18 or
+                            newer.</p>
+                    </details>
+                    <details>
+                        <summary>What are the controls?</summary>
+                        <p>You can play using a keyboard and mouse, a gamepad, or a touch screen. Gamepad support can
+                            vary depending on your browser. On mobile, you can select your preferred touch control
+                            scheme in the "Configure" menu.</p>
+                    </details>
+                    <details>
+                        <summary>Can I play offline?</summary>
+                        <p>You bet! In the "Configure" menu, scroll to the "Offline Play" section. You'll find an option
+                            there to install all necessary game files (about 550MB) for offline access.</p>
+                    </details>
+                    <details>
+                        <summary>I don't hear any sound or music. How do I fix it?</summary>
+                        <p>Most modern browsers block audio until you interact with the page. Click the mute icon (🔇)
+                            on the animated intro to enable sound.</p>
+                    </details>
+                    <details>
+                        <summary>I think I found a bug! Where do I report it?</summary>
+                        <p>As an active development project, some bugs are expected. If you find one, we'd be grateful
+                            if you'd report it on the isle-portable <a
+                                href="https://github.com/isledecomp/isle-portable/issues" target="_blank"
+                                rel="noopener noreferrer">GitHub Issues page</a>. Please include details about your
+                            browser, device, and what you were doing when the bug occurred.</p>
+                    </details>
+                    <details>
+                        <summary>Is this project open-source?</summary>
+                        <p>Yes, absolutely! This web port is built upon the incredible open-source <a
+                                href="https://github.com/isledecomp/isle-portable" target="_blank"
+                                rel="noopener noreferrer">LEGO Island (portable)</a> project, and the code for this
+                            website is also <a href="https://github.com/isledecomp/isle.pizza" target="_blank"
+                                rel="noopener noreferrer">available here</a>.</p>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <div id="configure-page" class="page-content">
+            <span class="page-back-button" role="button" aria-label="Go back to main menu">← Back</span>
+            <blockquote id="opfs-disabled" class="error-box" style="display:none;">
+                <p>OPFS is disabled in this browser. Default configuration will apply. If you are using a Firefox
+                    Private window, please change to a regular window instead to change configuration.</p>
+            </blockquote>
+            <div class="page-inner-content">
+                <div class="config-art-panel">
+                    <img src="shark.webp" alt="LEGO Island Shark and Brickster">
+                </div>
+                <form id="config-form" class="config-form">
+                    <div class="config-section">
+                        <h3 class="config-legend">Game</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-group-label">Version</label>
+                                <div class="select-wrapper">
+                                    <select id="language-select" name="Language">
+                                        <option value="da">Danish</option>
+                                        <option value="el">English (1.0)</option>
+                                        <option value="en" selected>English (1.1)</option>
+                                        <option value="fr">French</option>
+                                        <option value="de">German</option>
+                                        <option value="it">Italian</option>
+                                        <option value="jp">Japanese</option>
+                                        <option value="ko">Korean</option>
+                                        <option value="pt">Portuguese</option>
+                                        <option value="ru">Russian</option>
+                                        <option value="es">Spanish</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="window-form">
+                                <label class="form-group-label">Window</label>
+                                <div class="radio-group option-list">
+                                    <div class="option-item">
+                                        <input type="radio" id="window-windowed" name="window" data-not-ini="true"
+                                            checked>
+                                        <label for="window-windowed">Windowed</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="radio" id="window-fullscreen" name="window" data-not-ini="true">
+                                        <label for="window-fullscreen">Full Screen</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-label">
+                                    Aspect Ratio
+                                    <span class="tooltip-trigger">?
+                                        <span class="tooltip-content">Choose Original (4:3) to preserve the classic
+                                            aspect ratio with black bars, or select Widescreen to stretch the image to
+                                            fit your display.</span>
+                                </label>
+                                <div class="radio-group option-list">
+                                    <div class="option-item">
+                                        <input type="radio" id="aspect-original" value="1" name="Original Aspect Ratio"
+                                            checked>
+                                        <label for="aspect-original">Original (4:3)</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="radio" id="aspect-wide" value="0" name="Original Aspect Ratio">
+                                        <label for="aspect-wide">Widescreen</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-label">
+                                    Resolution
+                                    <span class="tooltip-trigger">?
+                                        <span class="tooltip-content">Choose Original (640 x 480) to preserve the
+                                            classic resolution, or select Maximum to render in the highest
+                                            quality.</span>
+                                </label>
+                                <div class="radio-group option-list">
+                                    <div class="option-item">
+                                        <input type="radio" id="resolution-original" value="1"
+                                            name="Original Resolution" checked>
+                                        <label for="resolution-original">Original (640 x 480)</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="radio" id="resolution-wide" value="0" name="Original Resolution">
+                                        <label for="resolution-wide">Maximum</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-section">
+                        <h3 class="config-legend">Input</h3>
+                        <div class="form-grid">
+                            <div class="form-group" id="touch-section">
+                                <label class="form-group-label">
+                                    Touch Control Scheme
+                                    <span class="tooltip-trigger">?
+                                        <span class="tooltip-content">
+                                            <div><strong>Virtual Gamepad (Recommended):</strong> Slide your finger to
+                                                move and turn.</div><br>
+                                            <div><strong>Virtual Arrow Keys:</strong> Tap screen areas to move. The top
+                                                moves forward, the bottom turns or moves back.</div><br>
+                                            <div><strong>Virtual Mouse:</strong> Emulates classic mouse controls with
+                                                touch.</div>
+                                        </span>
+                                </label>
+                                <div class="select-wrapper">
+                                    <select id="touch-type-select" name="Touch Scheme">
+                                        <option value="0">Virtual Mouse</option>
+                                        <option value="1">Virtual Arrow Keys</option>
+                                        <option value="2" selected>Virtual Gamepad</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-label">
+                                    Options
+                                    <span class="tooltip-trigger">?
+                                        <span class="tooltip-content">
+                                            <div><strong>Haptic feedback:</strong> On supported devices and browsers,
+                                                this provides physical feedback, like a vibration, while you play the
+                                                game.</div>
+                                        </span>
+                                </label>
+                                <div class="checkbox-group option-list">
+                                    <div class="option-item">
+                                        <input type="checkbox" id="check-haptic" name="Haptic" checked>
+                                        <label for="check-haptic">Haptic feedback</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-section">
+                        <h3 class="config-legend">Detail</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-group-label">
+                                    Island Model Quality
+                                    <span class="tooltip-trigger">?
+                                        <span class="tooltip-content">Note: using the "Low" setting will cause the
+                                            island to disappear. This is not a bug, but the same behavior as present in
+                                            the original game.</span>
+                                    </span>
+                                </label>
+                                <div class="radio-group option-list">
+                                    <div class="option-item">
+                                        <input type="radio" id="gfx-low" name="Island Quality" value="0">
+                                        <label for="gfx-low">Low</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="radio" id="gfx-med" name="Island Quality" value="1">
+                                        <label for="gfx-med">Medium</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="radio" id="gfx-high" name="Island Quality" value="2" checked>
+                                        <label for="gfx-high">High</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-label">Island Texture Quality</label>
+                                <div class="radio-group option-list">
+                                    <div class="option-item">
+                                        <input type="radio" id="tex-low" name="Island Texture" value="0">
+                                        <label for="tex-low">Low</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="radio" id="tex-high" name="Island Texture" value="1" checked>
+                                        <label for="tex-high">High</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-label" for="max-lod">
+                                    Maximum LOD
+                                    <span class="tooltip-trigger">?
+                                        <span class="tooltip-content">Maximum Level of Detail (LOD). A higher setting
+                                            will cause higher quality textures to be drawn regardless of
+                                            distance.</span>
+                                    </span>
+                                </label>
+                                <input type="range" id="max-lod" name="Max LOD" min="0" max="6" step="0.1" value="3.6">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-label" for="max-allowed-extras">
+                                    Maximum actors (5..40)
+                                    <span class="tooltip-trigger">?
+                                        <span class="tooltip-content">Maximum number of LEGO actors to exist in the
+                                            world at a time. The game will gradually increase the number of actors until
+                                            this maximum is reached and while performance is acceptable.</span>
+                                    </span>
+                                </label>
+                                <input type="range" id="max-allowed-extras" name="Max Allowed Extras" min="5" max="40"
+                                    value="20">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-section">
+                        <h3 class="config-legend">Graphics</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-group-label">Renderer</label>
+                                <div class="select-wrapper">
+                                    <select id="renderer-select" name="3D Device ID">
+                                        <option value="0 0x682656f3 0x0 0x0 0x2000000">Software</option>
+                                        <option value="0 0x682656f3 0x0 0x0 0x4000000" selected>WebGL</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-label">Transition Type</label>
+                                <div class="select-wrapper">
+                                    <select id="transition-type-select" name="Transition Type">
+                                        <option value="1">No Animation</option>
+                                        <option value="2">Dissolve</option>
+                                        <option value="3" selected>Mosaic</option>
+                                        <option value="4">Wipe Down</option>
+                                        <option value="5">Windows</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-label">Anti-aliasing</label>
+                                <div class="select-wrapper">
+                                    <select id="transition-type-select" name="MSAA">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-label">Anisotropic filtering</label>
+                                <div class="select-wrapper">
+                                    <select id="transition-type-select" name="Anisotropic">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-section">
+                        <h3 class="config-legend">Sound</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-group-label">Options</label>
+                                <div class="checkbox-group option-list">
+                                    <div class="option-item">
+                                        <input type="checkbox" id="check-music" name="Music" checked>
+                                        <label for="check-music">Music</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="checkbox" id="check-3d-sound" name="3DSound" checked>
+                                        <label for="check-3d-sound">3D Sound</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-section">
+                        <h3 class="config-legend">
+                            Extensions
+                            <span class="tooltip-trigger">?
+                                <span class="tooltip-content">
+                                    Expands the game with new content and modifications created by the community.
+                                </span>
+                            </span>
+                        </h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-group-label">
+                                    Options
+                                    <span class="tooltip-trigger">?
+                                        <span class="tooltip-content">
+                                            <strong>HD Textures:</strong> Enhance the game's visuals with
+                                            high-definition textures. An extra 25MB download is
+                                            required when this is enabled.<br><br>
+                                            <strong>Widescreen Backgrounds (work-in-progress):</strong> Adapts the game's background art
+                                            for modern widescreen monitors, eliminating unwanted 3D backgrounds on the
+                                            sides of the screen. An extra 1MB download is
+                                            required when this is enabled.
+                                        </span>
+                                    </span>
+                                </label>
+                                <div class="checkbox-group option-list">
+                                    <div class="option-item">
+                                        <input type="checkbox" id="check-hd-textures" name="Texture Loader"
+                                            data-not-ini="true">
+                                        <label for="check-hd-textures">
+                                            HD Textures
+                                        </label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="checkbox" id="check-widescreen-bgs" name="Widescreen Backgrounds"
+                                            data-not-ini="true">
+                                        <label for="check-widescreen-bgs">
+                                            Widescreen Backgrounds
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-section">
+                        <h3 class="config-legend">Offline Play</h3>
+                        <div class="offline-play-grid">
+                            <div class="offline-play-text">
+                                <h4>Install for Offline Access</h4>
+                                <p>By installing, the game will be available to play even when you are not connected to
+                                    the internet. This will download all necessary files to your device (about 550MB in
+                                    size).</p>
+                                <p style="font-size:0.7em;">Note: browsers enforce strict storage and memory quotas,
+                                    especially when using private/incognito windows. If you encounter an error during
+                                    installation, please use a regular window and make sure you have enough disk space
+                                    available on your device.</p>
+                            </div>
+                            <div class="offline-play-controls">
+                                <img class="control-img" id="install-btn" src="install_off.webp" alt="Install Game"
+                                    data-off="install_off.webp" data-on="install_on.webp" style="display: block;">
+                                <img class="control-img" id="uninstall-btn" src="uninstall_off.webp"
+                                    alt="Uninstall Game" data-off="uninstall_off.webp" data-on="uninstall_on.webp"
+                                    style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="free-stuff-page" class="page-content">
+            <span class="page-back-button" role="button" aria-label="Go back to main menu">← Back</span>
+            <div class="page-inner-content">
+                <div class="resource-list">
+                    <blockquote class="page-quote">
+                        <p>"In November of 2010, after all was said and done, I started getting emails from a few kids
+                            and some adults telling me how cool they thought LEGO Island was. Some people actually still
+                            play it. I was quite thrilled by these emails and actually quite honored."</p>
+                        <footer>- Wes Jenkins, Creative Director</footer>
+                    </blockquote>
+                    <a href="https://www.youtube.com/watch?v=bG55COe_f8I" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>The Making of LEGO Island: A Documentary</h3>
+                        <p>An in-depth documentary by MattKC that explores the fascinating and chaotic development story
+                            behind the classic game.</p>
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=Poaxx9sMxjw" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>LEGO Island Radio 24/7</h3>
+                        <p>Enjoy the iconic, high-quality soundtrack of LEGO Island anytime with this continuous live
+                            stream, complete with the original DJ interludes.</p>
+                    </a>
+                    <a href="https://www.legoisland.org/" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>LEGO Island Wiki</h3>
+                        <p>Your ultimate resource for all things LEGO Island. This fan-run wiki contains a wealth of
+                            information, research, and details about the game.</p>
+                    </a>
+                    <a href="https://github.com/isledecomp/isle" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>LEGO Island Decompilation</h3>
+                        <p>The core open-source project that reverse-engineered the original game, making this web port
+                            and other mods possible. Dive into the source code here.</p>
+                    </a>
+                    <a href="https://github.com/isledecomp/isle-portable" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>LEGO Island, Portable Version</h3>
+                        <p>A portable, cross-platform version of the decompilation project which serves as the direct
+                            foundation for this web-based port.</p>
+                    </a>
+                    <a href="https://github.com/isledecomp/isle.pizza" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>isle.pizza Frontend</h3>
+                        <p>The source code for this website! A custom-built frontend for the Emscripten version of the
+                            portable decompilation project.</p>
+                    </a>
+                    <a href="https://github.com/isledecomp/LEGOIslandRebuilder" target="_blank"
+                        rel="noopener noreferrer" class="resource-item">
+                        <h3>LEGO Island Rebuilder</h3>
+                        <p>A powerful launcher and tool for patching and modding the original 1997 PC version of LEGO
+                            Island. Essential for play and modding.</p>
+                    </a>
+                    <a href="https://github.com/isledecomp/SIEdit" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>SIEdit</h3>
+                        <p>A suite of tools developed by the decompilation team for viewing and editing the ".si" script
+                            and resource files from the original game.</p>
+                    </a>
+                    <a href="https://www.legoisland.org/wiki/The_Making_of_LEGO_Island" target="_blank"
+                        rel="noopener noreferrer" class="resource-item">
+                        <h3>The Making of LEGO Island, a memoir by Wes Jenkins</h3>
+                        <p>Read the fascinating, incomplete memoir from Creative Director Wes Jenkins, detailing the
+                            development process and the team behind the game.</p>
+                    </a>
+                    <a href="/poster.pdf" target="_blank" rel="noopener noreferrer" class="resource-item">
+                        <h3>LEGO Island: Free Poster</h3>
+                        <p>Download a copy of the iconic poster that was originally included with the retail release of
+                            the game.</p>
+                    </a>
+                    <a href="https://brickstobytes.org/games/lego-island" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>Development Materials Archive</h3>
+                        <p>Explore a collection of development materials, concept art, and other historical assets from
+                            the creation of LEGO Island.</p>
+                    </a>
+                    <a href="https://le717.github.io/LEGO-Island-VGF/legoisland/#interview" target="_blank"
+                        rel="noopener noreferrer" class="resource-item">
+                        <h3>Video Game Flashback: An Interview with Wes Jenkins</h3>
+                        <p>A detailed interview with LEGO Island's Creative Director, Wes Jenkins, offering unique
+                            insights into the game's production.</p>
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=fodBG_QylVM" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>LEGO® Island - Behind the Scenes</h3>
+                        <p>Watch a rare promotional video created during the game's development, showcasing its progress
+                            and vision at the time.</p>
+                    </a>
+                    <a href="https://tcrf.net/LEGO_Island" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>The Cutting Room Floor</h3>
+                        <p>Discover unused assets, hidden data, and other secrets left in the retail version of the
+                            game. A fascinating look at what might have been.</p>
+                    </a>
+                    <a href="https://projectisland.org/music/" target="_blank" rel="noopener noreferrer"
+                        class="resource-item">
+                        <h3>Project Island High Quality Music</h3>
+                        <p>A complete, high-quality re-digitization of the LEGO Island soundtrack, restored by the
+                            game's main composer, Lorin Nelson.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-disclaimer">
+            <p>LEGO® and LEGO Island™ are trademarks of The LEGO Group.</p>
+            <p>This is an unofficial fan project and is not affiliated with or endorsed by The LEGO Group.</p>
+        </div>
+    </div>
+
+    <div id="canvas-wrapper">
+        <div id="loading-gif-overlay">
+            <img src="cdspin.gif" alt="Loading game...">
+            <div class="quote-block">
+                <p class="quote-text">"Whoops! You have to put the CD in your computer"</p>
+                <p class="quote-attribution">- The Infomaniac (1997)</p>
+            </div>
+            <div class="loading-info-text">
+                <p>"Hello! Hola! Aloha! How ya doin'? YO!" It's your pal, the Infomaniac, with a 2025 update! No need to
+                    search for that CD case, my friend!</p>
+                <p>This amazing LEGO Island adventure is now streaming directly from... well, from a really, really big
+                    digital box of bricks! Keep an eye on the status below!</p>
+            </div>
+            <div id="emscripten-status-message" class="status-message-bar">
+                Loading LEGO® Island... please wait! <code>0%</code>
+            </div>
+        </div>
+        <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+    </div>
+
+    <script src="app.js" defer></script>
+    <script src="isle.js" defer></script>
+</body>
+
+</html>
