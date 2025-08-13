@@ -15,3 +15,17 @@ div{
   background-clip: content-box;
   background-color: white;
 }
+
+.button-grid{
+  display: table;
+  border: 5px solid #1C6EA4;
+  border-radius: 9px 9px 0px 0px;
+}
+
+.button-grid img{
+  
+}
+
+.logo{
+  width = 10px;
+}
