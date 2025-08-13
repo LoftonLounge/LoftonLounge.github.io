@@ -1,0 +1,17 @@
+/* CSS styles */
+body {
+background-color: #D0E4F5;
+background-image: url("https://t4.ftcdn.net/jpg/06/32/51/07/360_F_632510713_kJPPlraI8nLtrjFjdycdbtJQ0WTtJwSH.jpg");
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-position: 0px 0px;
+background-size: cover;
+}
+
+div{
+  margin: auto;
+  text-align: center;
+  padding: 0px 50px;
+  background-clip: content-box;
+  background-color: white;
+}
