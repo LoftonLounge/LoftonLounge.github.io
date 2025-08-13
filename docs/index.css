@@ -23,6 +23,7 @@ div{
 }
 
 .button-grid img{
+  width: 20vw;
   border: 5px solid #6A0080;
   border-radius: 9px;
 }
@@ -43,7 +44,7 @@ div{
   font-family: "Jersey 20", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 5vw;
+  font-size: 7vw;
   color: white;
 text-shadow: 1px 0px 1px black, 0px 1px 1px black, 2px 1px 1px black, 1px 2px 1px black, 3px 2px 1px black, 2px 3px 1px black, 4px 3px 1px black, 3px 4px 1px black, 5px 4px 1px black, 4px 5px 1px black, 6px 5px 1px black, 5px 6px 1px black, 7px 6px 1px black;
 }
